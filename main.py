@@ -20,9 +20,11 @@ def clean_folder():
     print('clean folder function ended')
 
 
-# def send_email_and_clean_folder(email_args):
-#     send_email(email_args)
-#     clean_folder()
+def send_email_and_clean_folder(image_path):
+    send_email(image_path)
+    clean_folder()
+
+
 while True:
     status = 0
     check, frame = video.read()
@@ -57,12 +59,10 @@ while True:
     status_list = status_list[-2:]
 
     if status_list[0] == 1 and status_list[1] == 0:
-        email_thread = Thread(target=send_email, args=(image_with_object,))
-        email_thread.daemon = True
-        clean_thread = Thread(target=clean_folder)
-        clean_thread.daemon = True
+        email_and_clean_thread = Thread(target=send_email_and_clean_folder, args=(image_with_object,))
+        email_and_clean_thread.daemon = True
 
-        email_thread.start()
+        email_and_clean_thread.start()
 
     print(status_list)
 
@@ -74,4 +74,3 @@ while True:
         break
 
 video.release()
-clean_thread.start()
